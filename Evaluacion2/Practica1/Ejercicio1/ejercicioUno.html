@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicio1</title>
+</head>
+<body>
+    <h1>Saludo perdonal</h1>
+
+    <mi-elemento>Hola, desconocido</mi-elemento>
+    <mi-elemento name="Zaira">Hola Zaira</mi-elemento>
+
+    <script>
+        class MiElemento extends HTMLElement {
+        
+            constructor(){
+                super();
+                
+                const shadow = this.attachShadow();
+
+                shadow.innerHTML= '<style></style>';
+
+            }
+
+        }
+        customElements.define('mi-elemento', MiElemento);
+
+    </script>
+</body>
+</html>
