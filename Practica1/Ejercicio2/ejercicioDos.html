@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicio2</title>
+</head>
+<body>
+    <h3>EJercicio Tarjeta</h3>
+
+    <template id="plantilla-tarjeta">
+        <div class="lista">
+            <p class="nombre">Nombre</p>
+            <p class="email">Email</p>
+            <p class="rol">Rol</p>
+        </div>
+    </template>
+    <plantilla-tarjeta></plantilla-tarjeta>
+
+    <div id="destino"></div>
+
+    <script>
+        class PlantillaTarjeta extends HTMLElement{
+            coonstructor(){
+                super();
+                this.attachShadow({ mode: "open" });
+                
+                const plantilla = document.getElementById("plantilla-tarjeta");
+                this.shadowRoot.appendChild(plantilla.content.cloneNode(true));
+                this._lista = this.shadowRoot.querySelector(".lista");
+                this._personas = [];
+            }
+
+            set datos(personas) {
+                this._personas = personas;
+            }
+
+            get datos(personas) {
+                return this._personas;
+            }
+
+                
+            
+        }
+        /*let copia = plantilla.content.cloneNode(true);
+        copia.querySelector(".nombre").textContent = "Zaira";
+        copia.querySelector(".email").textContent = "zaira@gmail.com";
+        copia.querySelector("rol").textContent = "Alumno";
+
+        document.getElementById("destino").appendChild(copia);
+
+        copia = plantilla.content.cloneNode(true);
+        copia.querySelector(".nombre").textContent = "Nieves";
+        copia.querySelector(".email").textContent = "nieves@gmail.com";
+        copia.querySelector("rol").textContent = "Profesor";
+
+
+        document.getElementById("destino").appendChild(copia);*/
+
+        customElements.define("lista-alumnos", );
+
+
+
+        
+    </script>
+    
+</body>
+</html>
