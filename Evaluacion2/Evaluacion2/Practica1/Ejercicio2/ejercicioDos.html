@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicio2</title>
+</head>
+<body>
+    <h3>EJercicio Tarjeta</h3>
+
+    <template id="plantilla-tarjeta">
+        <div class="tarjeta">
+            
+            <p class="nombre"><slot name="nombre">Sin noombre</slot></p>
+            <p class="email"><slot name="email">Sin correeo</slot></p>
+            <p class="rol"></p>
+        </div>
+    </template>
+
+    <tarjeta-usuario rol="Alumno">
+        <p slot="nombre">Zaira</p>
+        <p slot="email">zaira@gmail.com</p>
+    </tarjeta-usuario>
+    <tarjeta-usuario rol="Profesora">
+        <p slot="nombre">Nieve</p>
+        <p slot="email">nieves@gmail.com</p>
+    </tarjeta-usuario>
+    <tarjeta-usuario rol="Alumno">
+        <p slot="nombre">Eathan</p>
+    </tarjeta-usuario>
+
+    <script>
+        class TarjetaUsuario extends HTMLElement{
+            constructor(){
+                super();
+                this.attachShadow({ mode: "open" });
+                
+                const plantilla = document.getElementById("plantilla-tarjeta");
+                this.shadowRoot.appendChild(plantilla.content.cloneNode(true));
+                this._rol = this.shadowRoot.querySelector(".rol");
+            }
+
+            connectedCallback() {
+                this._pintar();
+            }
+            attributeChangedCallback(atributo, valorViejo, valorNuevo) {
+                this._pintar();
+            }
+            _pintar() {
+                this._rolEl.textContent = this.getAttribute("rol") ?? "";
+            } 
+        }
+        
+        customElements.define("tarjeta-usuario", TarjetaUsuario);
+        
+    </script>
+    
+</body>
+</html>

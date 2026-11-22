@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ejercicio 3 - Contador de clicks</title>
+</head>
+<body>
+    <contador-clicks></contador-clicks>
+
+    <contador-clicks inicio="0" max="8"></contador-clicks>
+
+    <script>
+        class ContadorClicks extends HTMLElement {
+            constructor() {
+                super();
+                this.attachShadow({ mode: "open" });
+
+                this.shadowRoot.innerHTML = `
+                    <button id="menos">-</button>
+                    <p id="valor"></p>
+                    <button id="mas">+</button>
+                `;
+                this._valor = this.shadowRoot.getElementById("valor");
+            }
+
+            connectedCallback() {
+                this._valor = Number(this.getAttribute("inicio")) || 0;
+                this._pintar();
+
+                this.shadowRoot.getElementById("mas").addEventListener("click", () => this._cambiar(1));
+                this.shadowRoot.getElementById("menos").addEventListener("click", () => this._cambiar(-1));
+            }
+
+            _cambiar(paso) {
+                try {
+                    const max = this.getAttribute("max");
+                    if (max !== null && this._valor + paso > Number(max)) {
+                        throw new Error("No se puede superar el valor máximo");
+                    }
+                    this._valor += paso;
+                    this._pintar();
+                    this.dispatchEvent(new CustomEvent("cambio", {
+                        detail: this._valor
+                    }));
+                } catch (error) {
+                    console.log(error.message);
+                }
+            }
+
+            _pintar() {
+                this._valor.textContent = this._valor;
+            }
+        }
+
+        customElements.define("contador-clicks", ContadorClicks);
+        document.querySelectorAll("contador-clicks").forEach((contador) => {
+            contador.addEventListener("cambio", (e) => {
+                console.log("Nuevo valor:", e.detail);
+            });
+        });
+    </script>
+</body>
+</html>

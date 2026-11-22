@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicio1</title>
+</head>
+<body>
+    <h1>Saludo perdonal</h1>
+
+    <saludo-personal>Hola, desconocido</saludo-personal>
+    <saludo-personal nombre="Zaira"></saludo-personal>
+    <button id="cambiar">cambiar saludo</button>
+
+    <script>
+        class SaludoPersonal extends HTMLElement {
+
+            static get observedAttributes(){
+                return ['nombre'];
+            }
+        
+            constructor(){
+                super();
+                
+                this.attachShadow({mode: 'open'});
+                this.shadowRoot.innerHTML= `
+                <p id="texto-saludo"></p>
+                `;
+
+                this._parrafo = this.shadowRoot.getElementById('texto-saludo');
+             
+            }
+
+            connectedCallback(){
+                this._pintar();
+            }
+
+            attributeChangedCallback(atributo, valorViejo, valorNuevo){
+                this._pintar();
+            }
+
+            _pintar(){
+                const nombre=this.getAttribute('nombre') || 'desconocido';
+                this._parrafo.textContent = `Hola ${nombre}`;
+            }
+
+        }
+        customElements.define('saludo-personal', SaludoPersonal);
+
+        document.getElementById('cambiar').addEventListener('click', () => {
+            const primerSaludo = document.querySelector('saludo-personal');
+            primerSaludo.setAttribute('nombre', 'Ana');
+        });
+    </script>
+</body>
+</html>
